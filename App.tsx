@@ -1,118 +1,80 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { useEffect, useState } from 'react';
+import { StatusBar, ActivityIndicator, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import SplashScreen from './src/screens/SplashScreen';
+import Routes from './src/Routes'; // Assuming the path is correct
+import RegisterScreen from './src/screens/RegisterScreen';
+import LoginScreen from './src/screens/LoginScreen';
+import OTPScreen from './src/OTPScreen';
+import DashboardScreen from './src/DashboardScreen';
+import PreferenceManager from './src/PreferenceManager';
+import { TOKEN } from './src/utils/constants';
+import RouteName from './src/RouteName';
+import ContactScreen from './src/ContactScreen';
+import UpdatePasswordScreen from './src/UpdatePasswordScreen';
+import WebViewScreen from './src/WebViewScreen';
+import ForgotPasswordScreen from './src/ForgotPasswordScreen';
+import CreatePasswordScreen from './src/CreatePasswordScreen';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+const Stack = createStackNavigator();
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const App = () => {
+  const [status, setStatus] = useState(null); // Store the token state
+  const [isLoading, setIsLoading] = useState(true); // Loading state
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
-
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  const getToken = async () => {
+    try {
+      const token = await PreferenceManager.get(TOKEN);
+      console.log("Token", token);
+      setStatus(token);
+    } catch (error) {
+      console.error("Error fetching token:", error);
+    } finally {
+      setIsLoading(false); // Loading complete
+    }
   };
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
+  useEffect(() => {
+    StatusBar.setBarStyle('dark-content'); // Dark status bar text color
+    StatusBar.setBackgroundColor('#FFFFFF'); // Set status bar background to white
+    getToken();
+  }, []);
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#6200EE" />
+      </View>
+    );
+  }
+
+  return (
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName={RouteName.SPLASH_SCREEN}
+          screenOptions={{
+            headerShown: false, // Hide header for all screens
+          }}
+        >
+          <Stack.Screen name="/" component={SplashScreen} />
+          <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+          <Stack.Screen name="LoginScreen" component={LoginScreen} />
+          <Stack.Screen name="ContactScreen" component={ContactScreen} />
+          <Stack.Screen name="UpdatePasswordScreen" component={UpdatePasswordScreen} />
+          <Stack.Screen name="ForgotPasswordScreen" component={ForgotPasswordScreen} />
+          <Stack.Screen name="CreatePasswordScreen" component={CreatePasswordScreen} />
+          <Stack.Screen name="OTPScreen" component={OTPScreen} />
+          <Stack.Screen name="DashboardScreen" component={DashboardScreen} />
+          <Stack.Screen name="WebViewScreen" component={WebViewScreen} />
+          {/* Main App Routes */}
+          <Stack.Screen name="Main" component={Routes} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </SafeAreaProvider>
+  );
+};
 
 export default App;

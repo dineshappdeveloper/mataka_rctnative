@@ -1,4 +1,4 @@
-package com.stm
+package com.myapp.mataka
 
 import android.app.Application
 import com.facebook.react.PackageList
