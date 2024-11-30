@@ -18,10 +18,7 @@ const UpdatePasswordScreen = () => {
   const [generalError, setGeneralError] = useState('');
   const navigation = useNavigation();
 
-  const validatePassword = (password) => {
-    const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{4,16}$/;
-    return regex.test(password);
-  };
+
 
   const handleUpdatePassword = async () => {
     // Reset error states
@@ -41,10 +38,7 @@ const UpdatePasswordScreen = () => {
       setPasswordError('Password must be at least 4 characters.');
       return;
     }
-    if (!validatePassword(trimmedPassword)) {
-      setPasswordError('Password must include at least one letter, one number, and one special character.');
-      return;
-    }
+
     if (trimmedPassword !== trimmedConfirmPassword) {
       setConfirmPasswordError('Password and confirm password do not match.');
       return;

@@ -99,7 +99,7 @@ const DashboardScreen = () => {
             <CustomCarousel imgList={imgList} />
           </View>
         )}
-        <View style={{ height: 120 }}>
+        <View style={{ height: 100 }}>
           <ContactActions contactDetails={appData} />
         </View>
 

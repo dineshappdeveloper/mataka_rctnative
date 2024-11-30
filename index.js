@@ -1,9 +1,4 @@
-/**
- * @format
- */
+import { AppRegistry } from 'react-native';
+import Mataka from './App'; // or './mataka'
 
-import {AppRegistry} from 'react-native';
-import App from './App';
-import {name as appName} from './app.json';
-
-AppRegistry.registerComponent(appName, () => App);
+AppRegistry.registerComponent('mataka', () => Mataka);
