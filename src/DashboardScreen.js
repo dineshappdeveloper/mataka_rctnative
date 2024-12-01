@@ -1,6 +1,6 @@
 // DashboardScreen.js
 import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, StatusBar, Alert, FlatList ,Image} from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, StatusBar, Alert, FlatList, Image, Linking } from 'react-native';
 import CustomDrawer from './CustomDrawer';
 import useDashboardController from './useDashboardController';
 import { useNavigation } from '@react-navigation/native';
@@ -79,6 +79,11 @@ const DashboardScreen = () => {
     </TouchableOpacity>
   );
 
+  const openBanner = async (url) => {
+
+    await Linking.openURL(url);
+  };
+
 
   return (
     <View style={styles.container}>
@@ -100,10 +105,14 @@ const DashboardScreen = () => {
           </View>
         )}
         <View style={{ height: 100 }}>
-          <ContactActions contactDetails={appData} />
+          <ContactActions contactDetails={appData?.contact_details} />
         </View>
+        appData.play_link
+        <TouchableOpacity onPress={async () =>openBanner(appData?.play_link)}>
+          <Image source={require("./assets/images/adimg.png")} style={{ width: '98%', height: 74, resizeMode: 'center', marginLeft: 4 }} />
+        </TouchableOpacity>
 
-        <Image source={require("./assets/images/adimg.png")} style={{ width: '98%', height: 74, resizeMode: 'center', marginLeft: 4 }} />
+
         <View style={{ height: 16 }}></View>
 
         <FlatList
@@ -116,7 +125,7 @@ const DashboardScreen = () => {
       </View>
 
       {/* Custom Drawer */}
-      <CustomDrawer isOpen={isDrawerOpen} toggleDrawer={toggleDrawer} profileData={profileData} appData={appData} navigation={navigation}/>
+      <CustomDrawer isOpen={isDrawerOpen} toggleDrawer={toggleDrawer} profileData={profileData} appData={appData} navigation={navigation} />
 
       {isDrawerOpen && (
         <TouchableOpacity style={styles.overlay} onPress={toggleDrawer} />

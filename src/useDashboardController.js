@@ -27,7 +27,7 @@ const useDashboardController = () => {
             const appDetails = await Repository.getAppDetails();
             setAppStatus('COMPLETE');
             console.log("fetchAppDetails :", appDetails.data.contact_details);
-            setAppData(appDetails.data.contact_details);
+            setAppData(appDetails.data);
             setImgList(appDetails.data.banner);
         } catch (error) {
             setAppStatus('ERROR');

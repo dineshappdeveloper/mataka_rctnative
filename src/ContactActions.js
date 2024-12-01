@@ -54,7 +54,7 @@ const ContactActions = ({ contactDetails }) => {
           style={styles.iconCard('blue')}
         >
           <Image
-            source={require('./assets/images/telegram.png')} // Replace with your actual PNG image path
+            source={require('./assets/images/telegram.png')} 
             style={styles.icon}
           />
         </TouchableOpacity>

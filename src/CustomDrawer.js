@@ -19,7 +19,7 @@ const CustomDrawer = ({ isOpen, toggleDrawer,profileData,appData,navigation }) =
   }, [isOpen]);
 
   const handleShare = () => {
-    Share.open({ message: 'Check out this amazing app! https://example.com' }).catch(console.error);
+    Share.open({ message: `'Check out this amazing app! '${appData?.app_link}`}).catch(console.error);
   };
 
   const handleLogout = () => {
@@ -56,7 +56,7 @@ const CustomDrawer = ({ isOpen, toggleDrawer,profileData,appData,navigation }) =
           style={styles.drawerItem}
           onPress={() => {
             toggleDrawer();
-            navigation.navigate('ContactScreen', { contactDetails: appData });
+            navigation.navigate('ContactScreen', { contactDetails: appData?.contact_details });
           }}>
           <Image source={require('./assets/images/contact.png')} style={{ height: 24, width: 24 }} resizeMode="contain" />
           <Text style={styles.drawerItemText}>Contact Us</Text>
